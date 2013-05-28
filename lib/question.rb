@@ -9,8 +9,22 @@ class Question
     # QuestionsDatabase.get_question_by_author_id(id)
   end
 
-  def self.most_followed
-    QuestionFollower.most_followed_questions(1)
+  # def self.most_followed
+#     QuestionFollower.most_followed_questions(1)
+#   end
+
+  def self.most_followed_questions(n)
+    query = <<-SQL
+        SELECT COUNT(question_id) as count, q.id, q.title, q.body, q.author_id
+          FROM question_followers as qf
+          JOIN questions as q
+            ON qf.question_id = q.id
+      GROUP BY qf.question_id
+      ORDER BY qf.question_id
+         LIMIT ?
+    SQL
+
+    QuestionsDatabase.db.execute(query, n)
   end
 
   # def self.most_liked(n)
