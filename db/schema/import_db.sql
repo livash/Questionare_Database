@@ -24,9 +24,11 @@ CREATE TABLE question_followers (
 
 CREATE TABLE replies (
 	id INTEGER PRIMARY KEY,
+	author_id INTEGER NOT NULL,
 	question_id INTEGER NOT NULL,
 	parent_id INTEGER,
 
+	FOREIGN KEY (author_id) REFERENCES users(id),
 	FOREIGN KEY (question_id) REFERENCES questions(id)
 	-- FOREIGN KEY (parent_id) REFERENCES replies(id)
 );
