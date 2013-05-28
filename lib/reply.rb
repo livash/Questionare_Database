@@ -22,6 +22,21 @@ class Reply
     @parent_id = reply_hash["parent_id"]
   end
 
+  def save
+    if @id.nil?
+      query = <<-SQL
+        INSERT INTO replies ('author_id', 'question_id', 'parent_id') VALUES (?, ?, ?)
+      SQL
+      QuestionsDatabase.db.execute(query, @author_id, @question_id, @parent_id)
+      @id = SQLite3::Database.last_insert_row_id
+    else
+      query = <<-SQL
+        UPDATE replies SET author_id = ?, question_id = ?, parent_id = ? WHERE id = ?
+      SQL
+      QuestionsDatabase.db.execute(query, @author_id, @question_id, @parent_id, @id)
+    end
+  end
+
   def author
     User.find_by_id(@author_id)
   end

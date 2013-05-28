@@ -41,6 +41,21 @@ class Question
     @author_id = question_hash["author_id"]
   end
 
+  def save
+    if @id.nil?
+      query = <<-SQL
+        INSERT INTO questions ('title', 'body', 'author_id') VALUES (?, ?, ?)
+      SQL
+      QuestionsDatabase.db.execute(query, @title, @body, @author_id)
+      @id = SQLite3::Database.last_insert_row_id
+    else
+      query = <<-SQL
+        UPDATE questions SET title = ?, body = ?, author_id = ? WHERE id = ?
+      SQL
+      QuestionsDatabase.db.execute(query, @title, @body, @author_id, @id)
+    end
+  end
+
   def author
     User.find_by_id(@author_id)
   end

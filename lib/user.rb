@@ -10,6 +10,21 @@ class User
     @lname = user_hash["lname"]
   end
 
+  def save
+    if @id.nil?
+      query = <<-SQL
+        INSERT INTO users ('fname', 'lname') VALUES (?, ?)
+      SQL
+      QuestionsDatabase.db.execute(query, @fname, @lname)
+      @id = QuestionsDatabase.db.last_insert_row_id
+    else
+      query = <<-SQL
+        UPDATE users SET fname = ?, lname = ? WHERE id = ?
+      SQL
+      QuestionsDatabase.db.execute(query, @fname, @lname, @id)
+    end
+  end
+
   def self.find_by_name(fname, lname)
     QuestionsDatabase.get_user_by_name(fname, lname)
   end
