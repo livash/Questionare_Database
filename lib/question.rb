@@ -2,18 +2,11 @@ require './questions_database'
 class Question
   attr_accessor :id, :title, :body, :author_id
 
-
-
   def self.find_by_author_id(id)
     QuestionsDatabase.get("questions", "author_id", id)
-    # QuestionsDatabase.get_question_by_author_id(id)
   end
 
-  # def self.most_followed
-#     QuestionFollower.most_followed_questions(1)
-#   end
-
-  def self.most_followed_questions(n)
+  def self.most_followed(n)
     query = <<-SQL
         SELECT COUNT(question_id) as count, q.id, q.title, q.body, q.author_id
           FROM question_followers as qf
@@ -26,10 +19,6 @@ class Question
 
     QuestionsDatabase.db.execute(query, n)
   end
-
-  # def self.most_liked(n)
-  #   QuestionLike.most_liked_questions(n)
-  # end
 
   def self.most_liked(n)
     query = <<-SQL
@@ -44,7 +33,6 @@ class Question
 
     QuestionsDatabase.db.execute(query, n)
   end
-
 
   def initialize(question_hash)
     @id = question_hash["id"]

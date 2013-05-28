@@ -16,7 +16,6 @@ class User
 
   def self.find_by_id(id)
     QuestionsDatabase.get("users", "id", id)
-    # QuestionsDatabase.get_user_by_id(id)
   end
 
   def authored_questions
@@ -45,8 +44,4 @@ class User
 
     QuestionsDatabase.db.execute(query, @id, @id)
   end
-
-  # def average_karma
-#     QuestionsDatabase.get_users_average_karma(@id)
-#   end
 end

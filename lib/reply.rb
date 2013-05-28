@@ -5,17 +5,14 @@ class Reply
 
   def self.find_by_id(id)
     QuestionsDatabase.get("replies", "id", id)
-    # QuestionsDatabase.get_reply_by_id(id)
   end
 
   def self.find_by_question_id(id)
     QuestionsDatabase.get("replies", "question_id", id)
-    # QuestionsDatabase.get_reply_by_question_id(id)
   end
 
   def self.find_by_author_id(id)
     QuestionsDatabase.get("replies", "author_id", id)
-    # QuestionsDatabase.get_reply_by_user_id(id)
   end
 
   def initialize(reply_hash)
